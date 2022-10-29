@@ -108,4 +108,31 @@ public class Pilha {
         return true;
     }
 
+    public String expressao(String expressao){
+        int quantidade_letras = expressao.length();
+        int abre_parenteses = 0;
+        int fecha_parenteses = 0;
+        for (int i = 0; i < quantidade_letras; i++){
+            this.adicionarFinal(String.valueOf(expressao.charAt(i)));
+        }
+        this.printarPilha();
+
+        for(int i = numero_elementos - 1; i >= 0; i--){
+            String elemento = this.removerFinal();
+            if(elemento.equals("(")){
+                abre_parenteses++;
+            }
+            else if(elemento.equals(")")){
+                fecha_parenteses++;
+            }
+        }
+
+        if(abre_parenteses == fecha_parenteses){
+            return "Expressao valida!";
+        }
+        else{
+            return "Expressao invalida!";
+        }
+    }
+
 }

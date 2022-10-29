@@ -1,3 +1,5 @@
+import javax.xml.transform.Source;
+
 public class Pilha {
     private int[] vetor_elementos;
     private int numero_elementos;
@@ -80,6 +82,79 @@ public class Pilha {
             int elemento = auxiliar2.removerFinal();
             this.adicionarFinal(elemento);
         }
+    }
+
+    public Pilha ordenarPilha(){
+        Pilha ordenada = new Pilha(numero_elementos);
+        Pilha auxiliar = new Pilha(numero_elementos);
+        int ultimo_elemento = this.removerFinal();
+        int elemento_atual;
+        ordenada.adicionarFinal(ultimo_elemento);
+        for (int i = this.numero_elementos - 1; i >= 0; i--){
+            elemento_atual = this.removerFinal();
+            if(ultimo_elemento <= elemento_atual){
+                ordenada.adicionarFinal(elemento_atual);
+                ultimo_elemento = elemento_atual;
+            } else {
+                while(ultimo_elemento >= elemento_atual){
+                    ultimo_elemento = ordenada.removerFinal();
+                    auxiliar.adicionarFinal(ultimo_elemento);
+                }
+                ordenada.adicionarFinal(auxiliar.removerFinal());
+                ordenada.adicionarFinal(elemento_atual);
+                ultimo_elemento = elemento_atual;
+                for(int j = auxiliar.numero_elementos - 1; j >= 0; j--){
+                    ordenada.adicionarFinal(auxiliar.removerFinal());
+                }
+            }
+        }
+
+        return ordenada;
+    }
+
+
+    public void eliminarMaior(){
+        Pilha aux = new Pilha(numero_elementos);
+        int maior = this.removerFinal();
+        aux.adicionarFinal(maior);
+        for(int indice = this.numero_elementos - 1; indice >= 0; indice--){
+            int elemento = removerFinal();
+            aux.adicionarFinal(elemento);
+            if(elemento > maior) {
+                maior = elemento;
+            }
+        }
+
+        for(int indice = aux.numero_elementos - 1; indice >= 0; indice--){
+            int elemento = aux.removerFinal();
+            this.adicionarFinal(elemento);
+            if (elemento == maior) {
+                this.removerFinal();
+            }
+        }
+
+    }
+
+    public void eliminarMenor(){
+        Pilha aux = new Pilha(numero_elementos);
+        int menor = this.removerFinal();
+        aux.adicionarFinal(menor);
+        for(int indice = this.numero_elementos - 1; indice >= 0; indice--){
+            int elemento = removerFinal();
+            aux.adicionarFinal(elemento);
+            if(elemento < menor) {
+                menor = elemento;
+            }
+        }
+
+        for(int indice = aux.numero_elementos - 1; indice >= 0; indice--){
+            int elemento = aux.removerFinal();
+            this.adicionarFinal(elemento);
+            if (elemento == menor) {
+                this.removerFinal();
+            }
+        }
+
     }
 
 }
