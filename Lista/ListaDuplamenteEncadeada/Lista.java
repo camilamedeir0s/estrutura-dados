@@ -224,33 +224,39 @@ public class Lista {
         }
     }
 
-    public void verificarMaisRepetido() throws EstruturaVaziaException{
+    public int verificarMaisRepetido() throws EstruturaVaziaException{
         if(listaVazia()) {
             throw new EstruturaVaziaException();
         }
-        else {
-            if(this.verificarRepetidos()) {
-                No noAtual = this.inicioLista;
-                No noVerificando = noAtual.proximo;
-                Lista lista_repeticoes = new Lista();
-                while(noAtual.proximo != null){
-                    lista_repeticoes.adicionarFinal(noAtual.valor);
-                    lista_repeticoes.adicionarFinal(0);
-                    while(noVerificando != null){
-                        if (noAtual.valor == noVerificando.valor){
-                            int elemento = lista_repeticoes.removerFinal().valor;
-                            elemento++;
-                            lista_repeticoes.adicionarFinal(elemento);
-                        }
-                        noVerificando = noVerificando.proximo;
-                    }
-                    noAtual = noAtual.proximo;
-                    noVerificando = noAtual.proximo;
+        No noAtual = this.inicioLista;
+        No noVerificando = noAtual.proximo;
+        Lista lista_repeticoes = new Lista();
+        while(noAtual.proximo != null){
+            lista_repeticoes.adicionarInicio(noAtual.valor);
+            lista_repeticoes.adicionarInicio(1);
+            while(noVerificando != null){
+                if (noAtual.valor == noVerificando.valor){
+                    int elemento = lista_repeticoes.removerInicio().valor;
+                    elemento++;
+                    lista_repeticoes.adicionarInicio(elemento);
                 }
-                lista_repeticoes.printarLista();
+                noVerificando = noVerificando.proximo;
             }
-
+            noAtual = noAtual.proximo;
+            noVerificando = noAtual.proximo;
         }
+
+        No noAtualRepeticoes = lista_repeticoes.inicioLista;
+        int maior_repeticao = noAtualRepeticoes.valor;
+        No maiorNo = noAtualRepeticoes;
+        while(noAtualRepeticoes != null){
+            if(noAtualRepeticoes.valor > maior_repeticao){
+                maior_repeticao = noAtualRepeticoes.valor;
+                maiorNo = noAtualRepeticoes;
+            }
+            noAtualRepeticoes = noAtualRepeticoes.proximo.proximo;
+        }
+        return maiorNo.proximo.valor;    
     }
 
     public void inverterLista() throws EstruturaVaziaException{
