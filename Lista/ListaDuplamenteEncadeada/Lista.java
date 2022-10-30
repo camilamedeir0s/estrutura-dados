@@ -97,16 +97,16 @@ public class Lista {
                     this.adicionarFinal(valor);
                 }
                 else{
-                    aux2 = aux1.proximo;
+                   
+                    if(aux1.proximo != null){
+                        aux2 = aux1.proximo;
+                        novo.proximo = aux2;
+                        aux2.anterior = novo;
+
+                    }
                     novo.anterior = aux1;
-                    novo.proximo = aux2;
                     aux1.proximo = novo;
-                    aux2.anterior = novo;
-//                    aux2 = aux1.anterior;
-//                    novo.anterior = aux2;
-//                    novo.proximo = aux1;
-//                    novo.proximo = aux.proximo;
-//                    aux.proximo = novo;
+
                 }
             }
         }
@@ -130,8 +130,10 @@ public class Lista {
                 }
                 else{
                     aux.proximo = removido.proximo;
-                    No aux2 = removido.proximo;
-                    aux2.anterior = aux;
+                    if(removido.proximo != null){
+                        No aux2 = removido.proximo;
+                        aux2.anterior = aux;
+                    }
                     removido.anterior = removido.proximo = null;
                 }
             }
@@ -167,5 +169,109 @@ public class Lista {
             noAtual = noAtual.proximo;
         }
     }
+
+    public int buscarElemento(int elemento){
+        if (listaVazia()){
+            return -1;
+        }else {
+            No noAtual = this.inicioLista;
+            int posicao = 0;
+            while(noAtual != null){
+                if (elemento == noAtual.valor){
+                    return posicao;
+                }
+                posicao ++;
+                noAtual = noAtual.proximo;
+            }
+            return -1;
+        }
+    }
+
+    public No removerNoMeio() throws EstruturaVaziaException{
+        if (this.listaVazia()){
+            throw new EstruturaVaziaException();
+        } else {
+            No noAtual = this.inicioLista;
+            No removido;
+            int quantidade = 0;
+            while(noAtual != null){
+                quantidade ++;
+                noAtual = noAtual.proximo;
+            }
+            quantidade = quantidade / 2;
+            removido = this.removerNaPosicao(quantidade);
+            return removido;
+        }
+    }
+
+    public boolean verificarRepetidos(){
+        if (listaVazia()){
+            return false;
+        } else {
+            No noAtual = this.inicioLista;
+            No noVerificando = noAtual.proximo;
+            while(noAtual.proximo != null){
+                while(noVerificando != null){
+                    if (noAtual.valor == noVerificando.valor){
+                        return true;
+                    }
+                    noVerificando = noVerificando.proximo;
+                }
+                noAtual = noAtual.proximo;
+                noVerificando = noAtual.proximo;
+            }
+            return false;
+        }
+    }
+
+    public void verificarMaisRepetido() throws EstruturaVaziaException{
+        if(listaVazia()) {
+            throw new EstruturaVaziaException();
+        }
+        else {
+            if(this.verificarRepetidos()) {
+                No noAtual = this.inicioLista;
+                No noVerificando = noAtual.proximo;
+                Lista lista_repeticoes = new Lista();
+                while(noAtual.proximo != null){
+                    lista_repeticoes.adicionarFinal(noAtual.valor);
+                    lista_repeticoes.adicionarFinal(0);
+                    while(noVerificando != null){
+                        if (noAtual.valor == noVerificando.valor){
+                            int elemento = lista_repeticoes.removerFinal().valor;
+                            elemento++;
+                            lista_repeticoes.adicionarFinal(elemento);
+                        }
+                        noVerificando = noVerificando.proximo;
+                    }
+                    noAtual = noAtual.proximo;
+                    noVerificando = noAtual.proximo;
+                }
+                lista_repeticoes.printarLista();
+            }
+
+        }
+    }
+
+    public void inverterLista() throws EstruturaVaziaException{
+        if (!listaVazia()) {
+            No noApoio = this.inicioLista;
+            int quantidade = 0;
+            while (noApoio != null) {
+                quantidade++;
+                noApoio = noApoio.proximo;
+            }
+            for (int i = 0 ; i < quantidade/2 ; i++){
+                int remover = quantidade - i - 1;
+                No aux = this.removerNaPosicao(remover);
+                this.adicionarNaPosicao(aux.valor, i);
+                aux = this.removerNaPosicao(i + 1);
+                this.adicionarNaPosicao(aux.valor, remover);
+            }
+        }
+    }
+
+
+
 
 }
